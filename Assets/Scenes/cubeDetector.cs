@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class cubeDetector : MonoBehaviour
 {
@@ -21,16 +23,25 @@ public class cubeDetector : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log("onCollision()");
-        if (collision.gameObject.name == "Key")
+
+        GameObject gameObject = collision.gameObject;
+        if (gameObject.name == "Key" && gameObject.GetComponent<XRGrabInteractable>())
         {
             Debug.Log("Cube bleu sur Cube rouge !");
-            TriggerExplosion(collision.contacts[0].point);
+            TriggerExplosion();
+            DisableGrab(collision.gameObject);
         }
     }
 
-    void TriggerExplosion(Vector3 position)
+    void TriggerExplosion()
     {
         Debug.Log("TriggerExplosion()");
         ExplosionEffect.Play();
+    }
+
+    void DisableGrab(GameObject obj)
+    {
+        Debug.Log("DisableGrab()");
+        Destroy(obj.GetComponent<XRGrabInteractable>());
     }
 }
