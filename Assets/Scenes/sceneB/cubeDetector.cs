@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
+using static UnityEditor.Progress;
 
 public class cubeDetector : MonoBehaviour
 {
@@ -43,5 +44,12 @@ public class cubeDetector : MonoBehaviour
     {
         Debug.Log("DisableGrab()");
         Destroy(obj.GetComponent<XRGrabInteractable>());
+
+        // Disable Kinetic
+        var rigidbody = obj.GetComponent<Rigidbody>();
+        if (rigidbody != null)
+        {
+            rigidbody.isKinematic = true;
+        }
     }
 }
