@@ -1,0 +1,64 @@
+public class colision : MonoBehaviour
+{
+    private bool hasItem = false; // Indique si le cube contient déjà un élément
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("OnTriggerEnter()");
+
+        GameObject gameObject = other.gameObject;
+        if (gameObject.name == "item" && gameObject.GetComponent<XRGrabInteractable>())
+        if (!hasItem) // Vérifie si le cube contient déjà un élément
+        {
+            Debug.Log("Item dans inventaire !");
+            AttachToCube(gameObject);
+            GameObject gameObject = other.gameObject;
+            if (gameObject.name.StartsWith("item") && gameObject.GetComponent<XRGrabInteractable>())
+            {
+                Debug.Log("Item dans inventaire !");
+                AttachToCube(gameObject);
+            }
+        }
+    }
+
+@@ -39,8 +42,8 @@ void AttachToCube(GameObject item)
+        item.transform.localRotation = Quaternion.identity;
+        item.transform.localScale = Vector3.one;
+
+        // Réduit la taille du cube
+        item.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        // Réduit la taille de l'item
+        item.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+
+        var rigidbody = item.GetComponent<Rigidbody>();
+        if (rigidbody != null)
+@@ -55,6 +58,7 @@ void AttachToCube(GameObject item)
+            grabInteractable.selectExited.AddListener(OnItemGrabbed);
+        }
+
+        hasItem = true; // Marque le cube comme contenant un élément
+    }
+
+    void OnItemGrabbed(SelectExitEventArgs args)
+@@ -77,5 +81,7 @@ void OnItemGrabbed(SelectExitEventArgs args)
+
+        // Réinitialiser l'échelle de l'item pour sa taille originale
+        item.transform.localScale = Vector3.one;
+
+        hasItem = false; // Marque le cube comme ne contenant plus d'élément
+    }
+}
